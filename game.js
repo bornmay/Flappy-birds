@@ -40,6 +40,12 @@ const fg = {
     }
 }
 
+const bird= {
+    animation =[
+         
+    ]
+}
+
 function draw(){
     ctx.fillStyle = '#70c5ce'
     ctx.fillRect(0,0,cvs.width ,cvs.height)
