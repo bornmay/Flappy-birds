@@ -4,6 +4,7 @@ const ctx = cvs.getContext("2d")
 
 
 let frames =1 ;
+const DEGREE = Math.PI/180
 
 const sprite = new Image()
 sprite.src = "img/sprite.png"
@@ -79,11 +80,17 @@ const bird= {
     gravity: 0.25,
     jump : 4.6,
     speed : 0,
+    rotation:0,
 
     draw : function(){
         let bird = this.animation[this.frame];
 
-        ctx.drawImage(sprite, bird.sX, bird.sY, this.w, this.h,this.x - this.w/2, this.y - this.h/2, this.w, this.h)
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        ctx.drawImage(sprite, bird.sX, bird.sY, this.w, this.h,- this.w/2, - this.h/2, this.w, this.h);
+        
+        ctx.restore();
 
     },
 
@@ -99,10 +106,26 @@ const bird= {
         this.frame = this.frame% this.animation.length;
 
         if(state.current == state.getReady){
-
+            this.y =150
+            this.rotation = 0 * DEGREE;
         }else{
             this.speed+= this.gravity
             this.y += this.speed;
+
+            if(this.y + this.h/2 >= cvs.height - fg.h){
+                this.y = cvs.height - fg.h - this.h/2;
+                if(state.current == state.game){
+                    state.current = state.over;
+                    
+                }
+            }
+
+            if(this.speed >= this.jump){
+                this.rotation = 90 * DEGREE;
+                this.frame = 1;
+            }else{
+                this.rotation = -25 * DEGREE;
+            }
         }
     }
 }
